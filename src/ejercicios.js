@@ -138,6 +138,40 @@ function matrizAImagen(matriz, rutaSalida) {
   // fs.writeFileSync(rutaSalida, buffer);
   
   // ESCRIBE TU CÓDIGO AQUÍ
+  function matrizAImagen(matriz, rutaSalida) {
+  // 1. Validar la matriz
+  validarMatriz(matriz);
+
+  // 2. Obtener dimensiones
+  const dims = obtenerDimensiones(matriz);
+
+  // 3. Crear el PNG
+  const png = new PNG({
+    width: dims.columnas,
+    height: dims.filas
+  });
+
+  // 4. Llenar png.data con los valores RGBA
+  for (let y = 0; y < dims.filas; y++) {
+    for (let x = 0; x < dims.columnas; x++) {
+      const idx = (dims.columnas * y + x) << 2;
+      const pixel = matriz[y][x];
+
+      png.data[idx]     = limitarValorColor(pixel.r);
+      png.data[idx + 1] = limitarValorColor(pixel.g);
+      png.data[idx + 2] = limitarValorColor(pixel.b);
+      png.data[idx + 3] = limitarValorColor(pixel.a);
+    }
+  }
+
+  // 5. Asegurar directorio de salida
+  asegurarDirectorio(path.dirname(rutaSalida));
+
+  // 6. Guardar el archivo
+  const buffer = PNG.sync.write(png);
+  fs.writeFileSync(rutaSalida, buffer);
+}
+
 }
 
 /**
@@ -157,30 +191,29 @@ function matrizAImagen(matriz, rutaSalida) {
  * // Ahora será {r:200, g:200, b:200, a:255} (gris)
  */
 function obtenerCanal(matriz, canal) {
-  // TODO: Implementar extracción de canal
-  
   // 1. Validar parámetros
-  // if (!['r', 'g', 'b'].includes(canal)) {
-  //   throw new Error("El canal debe ser 'r', 'g', o 'b'");
-  // }
-  
-  // 2. Crear matriz resultado
-  // const resultado = copiarMatriz(matriz);
-  
+  if (!['r', 'g', 'b'].includes(canal)) {
+    throw new Error("El canal debe ser 'r', 'g', o 'b'");
+  }
+
+  // 2. Crear copia de la matriz
+  const resultado = copiarMatriz(matriz);
+
   // 3. Para cada pixel, usar solo el valor del canal seleccionado
-  // for (let i = 0; i < resultado.length; i++) {
-  //   for (let j = 0; j < resultado[i].length; j++) {
-  //     const valor = matriz[i][j][canal];
-  //     resultado[i][j] = {
-  //       r: valor,
-  //       g: valor,
-  //       b: valor,
-  //       a: matriz[i][j].a
-  //     };
-  //   }
-  // }
-  
-  return []; // REEMPLAZAR CON TU CÓDIGO
+  for (let i = 0; i < resultado.length; i++) {
+    for (let j = 0; j < resultado[i].length; j++) {
+      const valor = matriz[i][j][canal];
+      resultado[i][j] = {
+        r: valor,
+        g: valor,
+        b: valor,
+        a: matriz[i][j].a
+      };
+    }
+  }
+
+  return resultado;
+
 }
 
 /**
