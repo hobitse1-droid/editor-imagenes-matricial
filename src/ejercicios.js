@@ -405,11 +405,27 @@ function voltearHorizontal(matriz) {
  * @example
  * const invertido = voltearVertical(matriz);
  */
-function voltearVertical(matriz) {
-  // TODO: Implementar volteo vertical
-  
-  return []; // REEMPLAZAR
+function voltearHorizontal(matriz) {
+  // 1. Crear copia de la matriz para no modificar la original
+  const resultado = copiarMatriz(matriz);
+
+  // 2. Recorrer cada fila y construirla invertida
+  for (let i = 0; i < resultado.length; i++) {
+    const filaOriginal = resultado[i];
+    const filaInvertida = [];
+
+    for (let j = 0; j < filaOriginal.length; j++) {
+      // Tomar el píxel desde el final hacia el inicio
+      filaInvertida[j] = filaOriginal[filaOriginal.length - 1 - j];
+    }
+
+    // Reemplazar la fila por la invertida
+    resultado[i] = filaInvertida;
+  }
+
+  return resultado;
 }
+
 
 /**
  * Ejercicio 3.3: Rotar 90 grados en sentido horario (10 puntos)
