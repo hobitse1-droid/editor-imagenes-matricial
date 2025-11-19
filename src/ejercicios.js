@@ -336,17 +336,30 @@ function invertirColores(matriz) {
  * const grises = convertirEscalaGrises(matriz);
  */
 function convertirEscalaGrises(matriz) {
-  // TODO: Implementar conversión a escala de grises
-  
-  // Para cada pixel:
-  // 1. Calcular el valor de gris
-  // const gris = 0.299 * pixel.r + 0.587 * pixel.g + 0.114 * pixel.b;
-  // 
-  // 2. Asignar ese valor a los tres canales
-  // pixelNuevo = {r: gris, g: gris, b: gris, a: pixel.a}
-  
-  return []; // REEMPLAZAR
+  // 1. Crear copia de la matriz para no modificar la original
+  const resultado = copiarMatriz(matriz);
+
+  // 2. Recorrer cada píxel y calcular el valor de gris
+  for (let i = 0; i < resultado.length; i++) {
+    for (let j = 0; j < resultado[i].length; j++) {
+      const pixel = matriz[i][j];
+      const gris = limitarValorColor(
+        0.299 * pixel.r + 0.587 * pixel.g + 0.114 * pixel.b
+      );
+
+      // 3. Asignar el valor de gris a los tres canales
+      resultado[i][j] = {
+        r: gris,
+        g: gris,
+        b: gris,
+        a: pixel.a
+      };
+    }
+  }
+
+  return resultado;
 }
+
 
 // ============================================
 // SECCIÓN 3: TRANSFORMACIONES GEOMÉTRICAS (30 puntos)
