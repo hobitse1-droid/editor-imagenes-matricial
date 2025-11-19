@@ -304,10 +304,22 @@ function ajustarBrillo(matriz, factor) {
  * // Rojo (255,0,0) → Cian (0,255,255)
  */
 function invertirColores(matriz) {
-  // TODO: Implementar inversión de colores
-  
-  return []; // REEMPLAZAR
-}
+  // 1. Crear copia de la matriz para no modificar la original
+  const resultado = copiarMatriz(matriz);
+
+  // 2. Recorrer cada píxel y aplicar la inversión
+  for (let i = 0; i < resultado.length; i++) {
+    for (let j = 0; j < resultado[i].length; j++) {
+      resultado[i][j].r = limitarValorColor(255 - matriz[i][j].r);
+      resultado[i][j].g = limitarValorColor(255 - matriz[i][j].g);
+      resultado[i][j].b = limitarValorColor(255 - matriz[i][j].b);
+      // El canal alpha se mantiene igual
+      resultado[i][j].a = matriz[i][j].a;
+    }
+  }
+
+  return resultado;
+  }
 
 /**
  * Ejercicio 2.3: Convertir a escala de grises (9 puntos)
